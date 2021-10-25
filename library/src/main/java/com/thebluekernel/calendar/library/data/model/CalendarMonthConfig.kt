@@ -10,9 +10,10 @@ import java.time.YearMonth
 internal data class CalendarMonthConfig(
     internal val startMonth: YearMonth,
     internal val endMonth: YearMonth,
-    internal val firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY,
+    internal val firstDayOfWeek: DayOfWeek,
+    internal val isHijri: Boolean
 ) {
-    internal val months = kotlin.run {
+    internal val months = run {
         return@run generateMonths()
     }
 
@@ -20,7 +21,7 @@ internal data class CalendarMonthConfig(
         var currentMonth = startMonth
         val calendarMonths = mutableListOf<CalendarMonth>()
         while (startMonth <= endMonth) {
-            calendarMonths.add(CalendarMonth(currentMonth))
+            calendarMonths.add(CalendarMonth(currentMonth, firstDayOfWeek, isHijri))
             if (currentMonth != endMonth) currentMonth = currentMonth.next else break
         }
         return calendarMonths

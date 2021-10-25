@@ -2,6 +2,7 @@ package com.thebluekernel.calendar.library.data.model
 
 import org.junit.Assert
 import org.junit.Test
+import java.time.DayOfWeek
 import java.time.YearMonth
 
 /**
@@ -12,7 +13,7 @@ class CalendarMonthConfigTest {
     fun `test when give startMonth and endMonth returns expected data`() {
         val startMonth = YearMonth.of(2021, 1)
         val endMonth = YearMonth.of(2021, 6)
-        val months = CalendarMonthConfig(startMonth, endMonth).months
+        val months = CalendarMonthConfig(startMonth, endMonth,DayOfWeek.SUNDAY,false).months
         Assert.assertTrue(months.isNotEmpty() && months.size == 6)
     }
 }

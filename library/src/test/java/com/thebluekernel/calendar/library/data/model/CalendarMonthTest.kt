@@ -11,13 +11,13 @@ import java.time.YearMonth
 class CalendarMonthTest {
     @Test
     fun `when call month name returns expected results`() {
-        val month = CalendarMonth(YearMonth.of(2021, 10))
-        Assert.assertTrue(month.getMonthName() == "OCTOBER")
+        val month = CalendarMonth(YearMonth.of(2021, 10), isHijri = false)
+        Assert.assertTrue(month.getMonthName() == "October")
     }
 
     @Test
     fun `when generate month days returns expected results`() {
-        val month = CalendarMonth(YearMonth.of(2019, 5))
+        val month = CalendarMonth(YearMonth.of(2019, 5), isHijri = false)
         val monthDays = month.days.flatten()
         Assert.assertTrue(monthDays.isNotEmpty())
     }
@@ -25,7 +25,13 @@ class CalendarMonthTest {
     @Test
     fun `when enter invalid month through a DateTimeException`() {
         Assert.assertThrows(DateTimeException::class.java) {
-            CalendarMonth(YearMonth.of(2019, -1))
+            CalendarMonth(YearMonth.of(2019, -1), isHijri = false)
         }
+    }
+
+    @Test
+    fun `when isHijri = true month name should returns as expected`() {
+        val month = CalendarMonth(YearMonth.of(2021, 10), isHijri = true)
+        Assert.assertTrue(month.getMonthName() == "Safar")
     }
 }
