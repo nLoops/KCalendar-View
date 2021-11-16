@@ -7,7 +7,7 @@ import java.time.YearMonth
 /**
  * Created by Ahmed Ibrahim on 24,October,2021
  */
-internal data class CalendarMonthConfig(
+internal data class CalendarRangeCreator(
     internal val startMonth: YearMonth,
     internal val endMonth: YearMonth,
     internal val firstDayOfWeek: DayOfWeek,

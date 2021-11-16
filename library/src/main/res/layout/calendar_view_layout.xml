@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/calendar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/calendar_header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/calendar_header_height"
+        android:background="@color/colorMonthBackground"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:padding="@dimen/spacing_normal"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/font_title"
+        tools:text="October" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/calendar_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/spacing_small"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:layout_marginEnd="@dimen/spacing_small"
+        android:layout_marginBottom="@dimen/spacing_small"
+        android:importantForAccessibility="no"
+        android:scrollbars="vertical" />
+
+</LinearLayout>

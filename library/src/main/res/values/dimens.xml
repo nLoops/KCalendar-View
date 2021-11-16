@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- spacing, used as reference for everything else -->
+    <dimen name="spacing_huge">56dp</dimen>
+    <dimen name="spacing_large">48dp</dimen>
+    <dimen name="spacing_medium">32dp</dimen>
+    <dimen name="spacing_normal">24dp</dimen>
+    <dimen name="spacing_small">16dp</dimen>
+    <dimen name="spacing_tiny">8dp</dimen>
+    <dimen name="spacing_mega_tiny">4dp</dimen>
+
+    <!-- font sizes -->
+    <dimen name="font_huge">34sp</dimen>
+    <dimen name="font_larger">24sp</dimen>
+    <dimen name="font_large">18sp</dimen>
+    <dimen name="font_normal">16sp</dimen>
+    <dimen name="font_small">12sp</dimen>
+    <dimen name="font_button">14sp</dimen>
+    <dimen name="font_title">20sp</dimen>
+
+    <!-- Calendar -->
+    <dimen name="calendar_header_height">72dp</dimen>
+</resources>

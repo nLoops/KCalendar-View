@@ -6,13 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <com.thebluekernel.calendar.library.data.ui.monthlist.CalendarMonthList
+        android:id="@+id/monthList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cal_calendarMaxYear="2022"
+        app:cal_calendarMinYear="2021"
+        app:cal_calendarStartOfWeek="sunday"
+        app:cal_calendarType="hijri"
+        app:cal_dayViewRes="@layout/item_day_layout"
+        app:cal_locale="en"
+        app:cal_monthViewRes="@layout/item_month_res_layout"
+        app:cal_scrollDirection="horizontal" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

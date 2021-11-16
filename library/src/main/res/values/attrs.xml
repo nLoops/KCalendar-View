@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CalendarMonthList">
+
+        <!-- layout resource for day cell layout -->
+        <attr name="cal_dayViewRes" format="reference" />
+
+        <!-- layout resource for month header layout -->
+        <attr name="cal_monthViewRes" format="reference" />
+
+        <!-- scroll direction H | V -->
+        <attr name="cal_scrollDirection" format="enum">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+
+        <!-- locale of calendar [ ar | en ] etc... -->
+        <attr name="cal_locale" format="string" />
+
+        <!-- calendar display Gregorian or Hijri or both :] -->
+        <attr name="cal_calendarType" format="enum">
+            <enum name="gregorian" value="0" />
+            <enum name="hijri" value="1" />
+            <enum name="both" value="2" />
+        </attr>
+
+        <!-- min year of calendar -->
+        <attr name="cal_calendarMinYear" format="integer" />
+
+        <!-- max year of calendar -->
+        <attr name="cal_calendarMaxYear" format="integer" />
+
+        <!-- start day of week by default SUNDAY-->
+        <attr name="cal_calendarStartOfWeek" format="enum">
+            <enum name="monday" value="0" />
+            <enum name="tuesday" value="1" />
+            <enum name="wednesday" value="2" />
+            <enum name="thursday" value="3" />
+            <enum name="friday" value="4" />
+            <enum name="saturday" value="5" />
+            <enum name="sunday" value="6" />
+        </attr>
+
+    </declare-styleable>
+</resources>

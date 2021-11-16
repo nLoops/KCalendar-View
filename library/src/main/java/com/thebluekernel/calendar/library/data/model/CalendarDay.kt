@@ -9,11 +9,17 @@ import java.time.format.DateTimeFormatter
 
 /**
  * Created by Ahmed Ibrahim on 20,October,2021
+ *
+ * @param date represent the current date of the day
+ * @param owner represent the month whom own this date
+ * @param isHijri flag to tell current day to render into Gregorien or Hijri format
+ *
+ * @see DayOwner
  */
 data class CalendarDay(
-    private val date: LocalDate,
-    private val owner: DayOwner = DayOwner.CURRENT_MONTH,
-    private val isHijri: Boolean
+    val date: LocalDate,
+    val owner: DayOwner = DayOwner.CURRENT_MONTH,
+    internal val isHijri: Boolean
 ) {
     fun getFormatted(pattern: String): String {
         return when {
@@ -27,6 +33,9 @@ data class CalendarDay(
 
 }
 
+/**
+ * enum to inform which month own specific [CalendarDay]
+ */
 enum class DayOwner {
     PREV_MONTH,
     CURRENT_MONTH,
