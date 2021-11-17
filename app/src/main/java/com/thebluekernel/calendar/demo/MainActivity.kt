@@ -1,5 +1,6 @@
 package com.thebluekernel.calendar.demo
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -12,11 +13,14 @@ import com.thebluekernel.calendar.library.data.model.*
 import com.thebluekernel.calendar.library.data.ui.CalendarDayBinder
 import com.thebluekernel.calendar.library.data.ui.CalendarMonthBinder
 import com.thebluekernel.calendar.library.data.ui.CalendarViewHolder
+import java.time.LocalDate
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    private var selectedDate: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,10 +36,16 @@ class MainActivity : AppCompatActivity() {
             override fun bind(holder: DayViewContainer, day: CalendarDay) {
                 with(holder) {
                     this.day = day
+                    val formattedDate = day.getFormatted(DEFAULT_DATE_PATTERN)
                     dayTextView.text = day.getFormatted("dd")
+                    dayTextView.setOnClickListener {
+                        selectedDate = formattedDate
+                        calendarView.notifyMonthChanged(day)
+                    }
                     with(day) {
                         when {
                             isBeforeToday() -> {
+                                dayTextView.isEnabled = false
                                 dayTextView.setBackgroundResource(0)
                                 dayTextView.setTextColor(
                                     ContextCompat.getColor(
@@ -54,15 +64,24 @@ class MainActivity : AppCompatActivity() {
                                 )
                             }
                             isEqualToday() -> {
-                                dayTextView.setBackgroundResource(R.drawable.bg_calendar_today)
+                                dayTextView.setBackgroundResource(0)
                                 dayTextView.setTextColor(
                                     ContextCompat.getColor(
                                         context,
-                                        R.color.colorWhite
+                                        R.color.colorCalendarTextToday
                                     )
                                 )
                             }
                         }
+                    }
+                    if (selectedDate == formattedDate) {
+                        dayTextView.setBackgroundResource(R.drawable.bg_calendar_today)
+                        dayTextView.setTextColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.colorWhite
+                            )
+                        )
                     }
                 }
             }
@@ -87,23 +106,17 @@ class MainActivity : AppCompatActivity() {
         calendarView.dayBinder = dayBinder
         calendarView.monthBinder = monthBinder
     }
+
+    companion object {
+        private const val DEFAULT_DATE_PATTERN = "yyyy-MM-dd"
+    }
 }
 
 // Day class instance
 class DayViewContainer(view: View) : CalendarViewHolder(view) {
     lateinit var day: CalendarDay
     val dayTextView = ItemDayLayoutBinding.bind(view).dayTextView
-    val context = dayTextView.context
-
-    init {
-        dayTextView.setOnClickListener {
-            Snackbar.make(
-                view,
-                "You've clicked on day ${day.getFormatted("yyyy-MM-dd")}",
-                Snackbar.LENGTH_SHORT
-            ).show()
-        }
-    }
+    val context: Context = dayTextView.context
 }
 
 // Month class instance

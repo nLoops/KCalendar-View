@@ -4,6 +4,6 @@
     <color name="black">#000</color>
     <color name="colorCalendarTextUnselected">#C1C7D0</color>
     <color name="colorCalendarTextSelected">#000000</color>
-    <color name="colorCalendarTextToday">#329FA0</color>
+    <color name="colorCalendarTextToday">#048998</color>
     <color name="colorWhite">#FFFFFF</color>
 </resources>
