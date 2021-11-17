@@ -4,6 +4,9 @@ plugins {
 }
 
 android {
+    final Properties localProps = new Properties()
+    localProps.load(project.rootProject.file('local.properties').newReader())
+
     compileSdk 31
 
     defaultConfig {
@@ -18,9 +21,18 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    signingConfigs {
+        release {
+            storeFile file("../key.jks")
+            keyAlias localProps.getProperty("key.alias")
+            storePassword localProps.getProperty("key.password")
+            keyPassword localProps.getProperty("key.password")
+        }
+    }
     buildTypes {
         release {
-            minifyEnabled false
+            signingConfig signingConfigs.release
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
