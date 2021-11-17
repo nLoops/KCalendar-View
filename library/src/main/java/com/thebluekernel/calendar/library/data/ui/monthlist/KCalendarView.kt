@@ -7,7 +7,6 @@ import androidx.core.content.withStyledAttributes
 import androidx.recyclerview.widget.RecyclerView
 import com.thebluekernel.calendar.library.R
 import com.thebluekernel.calendar.library.data.model.*
-import com.thebluekernel.calendar.library.data.model.CalendarRangeCreator
 import com.thebluekernel.calendar.library.data.ui.CalendarDayBinder
 import com.thebluekernel.calendar.library.data.ui.CalendarMonthBinder
 import com.thebluekernel.calendar.library.data.utils.next
@@ -280,6 +279,10 @@ open class KCalendarView @JvmOverloads constructor(
     fun scrollToNext(month: YearMonth) = scrollTo(month.next)
 
     fun scrollToPrev(month: YearMonth) = scrollTo(month.previous)
+
+    fun notifyDayChanged(day: CalendarDay) = calendarAdapter.reloadDay(day)
+
+    fun notifyMonthChanged(day: CalendarDay) = calendarAdapter.reloadMonth(day.getMonth())
 
     companion object {
         private const val SQUARE = Int.MIN_VALUE

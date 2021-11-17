@@ -5,6 +5,7 @@ import com.thebluekernel.calendar.library.data.utils.toHijri
 import com.thebluekernel.calendar.library.data.utils.today
 import com.thebluekernel.calendar.library.data.utils.todayInHijri
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.ZoneOffset
 import java.time.chrono.HijrahDate
 import java.time.format.DateTimeFormatter
@@ -39,6 +40,8 @@ data class CalendarDay(
     fun isEqualToday() = date.isEqual(today())
 
     fun isAfterToday() = date.isAfter(today())
+
+    internal fun getMonth(): YearMonth = YearMonth.of(date.year, date.monthValue)
 
 }
 

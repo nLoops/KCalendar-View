@@ -12,8 +12,8 @@ import com.thebluekernel.calendar.library.R
 import com.thebluekernel.calendar.library.data.model.CalendarDay
 import com.thebluekernel.calendar.library.data.model.CalendarMonth
 import com.thebluekernel.calendar.library.data.model.CalendarRangeCreator
-import com.thebluekernel.calendar.library.data.model.generateWeekDays
 import com.thebluekernel.calendar.library.data.ui.*
+import com.thebluekernel.calendar.library.data.utils.NO_INDEX
 import com.thebluekernel.calendar.library.data.utils.daysOfWeekFromLocale
 import com.thebluekernel.calendar.library.data.utils.inflate
 import java.time.YearMonth
@@ -117,11 +117,22 @@ internal class KCalendarViewAdapter(
         return months.indexOfFirst { it.month == month }
     }
 
+    internal fun getAdapterPosition(day: CalendarDay): Int = months.indexOfFirst { months ->
+        months.days.any { weeks -> weeks.any { it == day } }
+    }
+
     fun reloadMonth(month: YearMonth) {
         notifyItemChanged(getAdapterPosition(month))
     }
 
     fun reloadCalendar() {
         notifyItemRangeChanged(0, itemCount)
+    }
+
+    fun reloadDay(day: CalendarDay) {
+        val position = getAdapterPosition(day)
+        if (position != NO_INDEX) {
+            notifyItemChanged(position, day)
+        }
     }
 }
