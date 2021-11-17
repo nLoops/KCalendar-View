@@ -12,6 +12,7 @@ import com.thebluekernel.calendar.library.R
 import com.thebluekernel.calendar.library.data.model.CalendarDay
 import com.thebluekernel.calendar.library.data.model.CalendarMonth
 import com.thebluekernel.calendar.library.data.model.CalendarRangeCreator
+import com.thebluekernel.calendar.library.data.model.generateWeekDays
 import com.thebluekernel.calendar.library.data.ui.*
 import com.thebluekernel.calendar.library.data.utils.daysOfWeekFromLocale
 import com.thebluekernel.calendar.library.data.utils.inflate
@@ -22,8 +23,8 @@ import java.util.*
 /**
  * Created by Ahmed Ibrahim on 31,October,2021
  */
-internal class MonthListAdapter(
-    private val monthList: CalendarMonthList,
+internal class KCalendarViewAdapter(
+    private val monthList: KCalendarView,
     private val creator: CalendarRangeCreator
 ) : RecyclerView.Adapter<MonthViewHolder>() {
 

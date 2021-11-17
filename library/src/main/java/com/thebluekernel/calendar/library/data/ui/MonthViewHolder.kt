@@ -5,14 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.thebluekernel.calendar.library.data.model.CalendarDay
 import com.thebluekernel.calendar.library.data.model.CalendarMonth
-import com.thebluekernel.calendar.library.data.ui.monthlist.MonthListAdapter
+import com.thebluekernel.calendar.library.data.ui.monthlist.KCalendarViewAdapter
 
 /**
  * Created by Ahmed Ibrahim on 24,October,2021
  */
 internal class MonthViewHolder constructor(
     rootLayout: ViewGroup,
-    private val adapter: MonthListAdapter,
+    private val adapter: KCalendarViewAdapter,
     private val weekHolders: List<WeekViewHolder>
 ) : RecyclerView.ViewHolder(rootLayout) {
 

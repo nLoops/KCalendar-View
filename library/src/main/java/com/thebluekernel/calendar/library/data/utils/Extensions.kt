@@ -22,8 +22,11 @@ internal fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean 
     return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 }
 
-internal fun TemporalAccessor.formatWithPattern(pattern: String): String {
-    val formatter = DateTimeFormatter.ofPattern(pattern)
+internal fun TemporalAccessor.formatWithPattern(
+    pattern: String,
+    locale: Locale = Locale.getDefault()
+): String {
+    val formatter = DateTimeFormatter.ofPattern(pattern, locale)
     return formatter.format(this)
 }
 
@@ -43,6 +46,8 @@ internal fun LocalDate.toHijri() = HijrahDate.from(this)
 
 internal fun todayInHijri() = LocalDate.now().toHijri()
 
+internal fun today() = LocalDate.now()
+
 internal val YearMonth.next: YearMonth
     get() = this.plusMonths(1)
 
@@ -51,10 +56,11 @@ internal val YearMonth.previous: YearMonth
 
 internal fun YearMonth.firstDay() = LocalDate.of(this.year, this.monthValue, 1)
 
-internal fun YearMonth.monthName(isHijri: Boolean) = when (isHijri) {
-    true -> firstDay().toHijri().formatWithPattern(MONTH_NAME_PATTERN)
-    false -> firstDay().formatWithPattern(MONTH_NAME_PATTERN)
-}
+internal fun YearMonth.monthName(isHijri: Boolean, locale: Locale = Locale.getDefault()) =
+    when (isHijri) {
+        true -> firstDay().toHijri().formatWithPattern(MONTH_NAME_PATTERN, locale)
+        false -> firstDay().formatWithPattern(MONTH_NAME_PATTERN, locale)
+    }
 
 internal fun YearMonth.yearValue(isHijri: Boolean) = when (isHijri) {
     true -> firstDay().toHijri().formatWithPattern(HIJRI_YEAR_NAME_PATTERN).toInt()

@@ -2,6 +2,8 @@ package com.thebluekernel.calendar.library.data.model
 
 import com.thebluekernel.calendar.library.data.utils.formatWithPattern
 import com.thebluekernel.calendar.library.data.utils.toHijri
+import com.thebluekernel.calendar.library.data.utils.today
+import com.thebluekernel.calendar.library.data.utils.todayInHijri
 import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.chrono.HijrahDate
@@ -31,6 +33,12 @@ data class CalendarDay(
 
     fun getInMillis(): Long =
         date.atStartOfDay(ZoneOffset.systemDefault()).toInstant().toEpochMilli()
+
+    fun isBeforeToday() = date.isBefore(today())
+
+    fun isEqualToday() = date.isEqual(today())
+
+    fun isAfterToday() = date.isAfter(today())
 
 }
 

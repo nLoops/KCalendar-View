@@ -10,6 +10,7 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.chrono.HijrahDate
 import java.time.temporal.WeekFields
+import java.util.*
 
 /**
  * Created by Ahmed Ibrahim on 24,October,2021
@@ -22,7 +23,7 @@ import java.time.temporal.WeekFields
  *
  */
 data class CalendarMonth(
-    internal val month: YearMonth,
+    val month: YearMonth,
     internal val firstDayOfWeek: DayOfWeek,
     internal val isHijri: Boolean
 ) {
@@ -78,6 +79,6 @@ internal fun CalendarMonth.generateWeekDays(): MutableList<List<CalendarDay>> {
     return weekDaysGroup
 }
 
-fun CalendarMonth.monthName() = this.month.monthName(isHijri)
+fun CalendarMonth.monthName(locale: Locale = Locale.getDefault()) = this.month.monthName(isHijri,locale)
 
 fun CalendarMonth.yearValue() = this.month.yearValue(isHijri)

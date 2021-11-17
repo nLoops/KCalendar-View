@@ -2,28 +2,24 @@ package com.thebluekernel.calendar.library.data.ui.monthlist
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.annotation.Px
 import androidx.core.content.withStyledAttributes
 import androidx.recyclerview.widget.RecyclerView
 import com.thebluekernel.calendar.library.R
+import com.thebluekernel.calendar.library.data.model.*
 import com.thebluekernel.calendar.library.data.model.CalendarRangeCreator
-import com.thebluekernel.calendar.library.data.model.CalendarType
-import com.thebluekernel.calendar.library.data.model.DEFAULT_LOCALE
-import com.thebluekernel.calendar.library.data.model.Size
 import com.thebluekernel.calendar.library.data.ui.CalendarDayBinder
 import com.thebluekernel.calendar.library.data.ui.CalendarMonthBinder
-import com.thebluekernel.calendar.library.data.utils.mockDayBinder
-import com.thebluekernel.calendar.library.data.utils.mockMonthBinder
-import com.thebluekernel.calendar.library.data.utils.todayInHijri
+import com.thebluekernel.calendar.library.data.utils.next
+import com.thebluekernel.calendar.library.data.utils.previous
 import java.time.DayOfWeek
-import java.time.LocalDate
 import java.time.Year
 import java.time.YearMonth
-import java.time.chrono.HijrahDate
 
 /**
  * Created by Ahmed Ibrahim on 31,October,2021
  */
-open class CalendarMonthList @JvmOverloads constructor(
+open class KCalendarView @JvmOverloads constructor(
     context: Context,
     private val attrs: AttributeSet? = null,
     private val defStyleAttr: Int = 0
@@ -40,7 +36,8 @@ open class CalendarMonthList @JvmOverloads constructor(
     var dayBinder: CalendarDayBinder<*>? = null
         set(value) {
             field = value
-            invalidateViewHolders()
+//            invalidateViewHolders()
+            render()
         }
 
     /**
@@ -51,7 +48,8 @@ open class CalendarMonthList @JvmOverloads constructor(
             if (field != value) {
                 if (value == 0) throw IllegalArgumentException("Day resource cannot be null.")
                 field = value
-                updateAdapterViewConfig()
+//                updateAdapterViewConfig()
+                render()
             }
         }
 
@@ -66,7 +64,8 @@ open class CalendarMonthList @JvmOverloads constructor(
     var monthBinder: CalendarMonthBinder<*>? = null
         set(value) {
             field = value
-            invalidateViewHolders()
+//            invalidateViewHolders()
+            render()
         }
 
     /**
@@ -86,7 +85,7 @@ open class CalendarMonthList @JvmOverloads constructor(
         set(value) {
             if (field != value) {
                 field = value
-                setup()
+                render()
             }
         }
 
@@ -94,7 +93,7 @@ open class CalendarMonthList @JvmOverloads constructor(
         set(value) {
             if (field != value) {
                 field = value
-                setup()
+                render()
             }
         }
 
@@ -140,7 +139,7 @@ open class CalendarMonthList @JvmOverloads constructor(
         set(value) {
             if (field != value) {
                 field = value
-                setup()
+                render()
             }
         }
 
@@ -148,17 +147,50 @@ open class CalendarMonthList @JvmOverloads constructor(
     var startMonth: YearMonth = YearMonth.of(calendarMinYear, 1)
     var endMonth: YearMonth = YearMonth.of(calendarMaxYear, 12)
 
-    private val calendarLayoutManager: MonthListLayoutManager
-        get() = layoutManager as MonthListLayoutManager
+    private val calendarLayoutManager: KCalendarLayoutManager
+        get() = layoutManager as KCalendarLayoutManager
 
-    private val calendarAdapter: MonthListAdapter
-        get() = adapter as MonthListAdapter
+    private val calendarAdapter: KCalendarViewAdapter
+        get() = adapter as KCalendarViewAdapter
 
-    private val pagerSnapHelper = CalenderPageSnapHelper()
+    private val pagerSnapHelper = KCalenderViewSnapHelper()
+
+    /**
+     * The margin, in pixels to be applied
+     * to the start of each month view.
+     */
+    @Px
+    var monthMarginStart = 0
+        private set
+
+    /**
+     * The margin, in pixels to be applied
+     * to the end of each month view.
+     */
+    @Px
+    var monthMarginEnd = 0
+        private set
+
+    /**
+     * The margin, in pixels to be applied
+     * to the top of each month view.
+     */
+    @Px
+    var monthMarginTop = 0
+        private set
+
+    /**
+     * The margin, in pixels to be applied
+     * to the bottom of each month view.
+     */
+    @Px
+    var monthMarginBottom = 0
+        private set
+
+    internal val isVertical: Boolean
+        get() = orientation == VERTICAL
 
     init {
-        dayBinder = mockDayBinder
-        monthBinder = mockMonthBinder
         initWithStyledAttributes()
     }
 
@@ -226,18 +258,28 @@ open class CalendarMonthList @JvmOverloads constructor(
         }
     }
 
-    fun setup() {
+    private fun render() {
         val isHijri = when (calendarType) {
             CalendarType.HIJRI -> true
             CalendarType.GREGORIAN -> false
             else -> false
         }
         val calendarCreator = CalendarRangeCreator(startMonth, endMonth, firstDayOfWeek, isHijri)
-        adapter = MonthListAdapter(this, calendarCreator)
+        adapter = KCalendarViewAdapter(this, calendarCreator)
         if (orientation == HORIZONTAL) pagerSnapHelper.attachToRecyclerView(this)
-        layoutManager = MonthListLayoutManager(this, orientation)
-            .apply { scrollToMonth(YearMonth.now()) }
+        val month = when (isHijri) {
+            true -> YearMonth.now().next
+            else -> YearMonth.now()
+        }
+        layoutManager = KCalendarLayoutManager(this, orientation)
+            .apply { scrollToMonth(month) }
     }
+
+    private fun scrollTo(month: YearMonth) = calendarLayoutManager.smoothScrollToMonth(month)
+
+    fun scrollToNext(month: YearMonth) = scrollTo(month.next)
+
+    fun scrollToPrev(month: YearMonth) = scrollTo(month.previous)
 
     companion object {
         private const val SQUARE = Int.MIN_VALUE

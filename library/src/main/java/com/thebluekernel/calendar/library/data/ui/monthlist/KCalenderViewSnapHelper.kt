@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * Created by Ahmed Ibrahim on 31,October,2021
  *
- * Helper to allow [CalendarMonthList] scroll like pager in H state
+ * Helper to allow [KCalendarView] scroll like pager in H state
  *
  */
-internal class CalenderPageSnapHelper : PagerSnapHelper() {
+internal class KCalenderViewSnapHelper : PagerSnapHelper() {
     override fun calculateDistanceToFinalSnap(
         layoutManager: RecyclerView.LayoutManager,
         targetView: View
