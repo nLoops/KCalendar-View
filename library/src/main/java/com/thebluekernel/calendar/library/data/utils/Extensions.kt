@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import com.thebluekernel.calendar.library.data.model.CalendarMonth
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -21,20 +22,10 @@ internal fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean 
     return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 }
 
-internal val YearMonth.next: YearMonth
-    get() = this.plusMonths(1)
-
-internal val YearMonth.previous: YearMonth
-    get() = this.minusMonths(1)
-
 internal fun TemporalAccessor.formatWithPattern(pattern: String): String {
     val formatter = DateTimeFormatter.ofPattern(pattern)
     return formatter.format(this)
 }
-
-internal fun LocalDate.toHijri() = HijrahDate.from(this)
-
-internal fun todayInHijri() = LocalDate.now().toHijri()
 
 fun daysOfWeekFromLocale(startDayOfWeek: DayOfWeek): Array<DayOfWeek> {
     var daysOfWeek = DayOfWeek.values()
@@ -48,4 +39,39 @@ fun daysOfWeekFromLocale(startDayOfWeek: DayOfWeek): Array<DayOfWeek> {
     return daysOfWeek
 }
 
+internal fun LocalDate.toHijri() = HijrahDate.from(this)
+
+internal fun todayInHijri() = LocalDate.now().toHijri()
+
+internal val YearMonth.next: YearMonth
+    get() = this.plusMonths(1)
+
+internal val YearMonth.previous: YearMonth
+    get() = this.minusMonths(1)
+
+internal fun YearMonth.firstDay() = LocalDate.of(this.year, this.monthValue, 1)
+
+internal fun YearMonth.monthName(isHijri: Boolean) = when (isHijri) {
+    true -> firstDay().toHijri().formatWithPattern(MONTH_NAME_PATTERN)
+    false -> firstDay().formatWithPattern(MONTH_NAME_PATTERN)
+}
+
+internal fun YearMonth.yearValue(isHijri: Boolean) = when (isHijri) {
+    true -> firstDay().toHijri().formatWithPattern(HIJRI_YEAR_NAME_PATTERN).toInt()
+    else -> this.year
+}
+
+internal fun YearMonth.monthVal(isHijri: Boolean) = when (isHijri) {
+    true -> firstDay().toHijri().formatWithPattern(HIJRI_MONTH_VALUE_PATTERN).toInt()
+    else -> this.monthValue
+}
+
+internal fun YearMonth.daysInMonthLength(isHijri: Boolean) = when (isHijri) {
+    true -> firstDay().toHijri().lengthOfMonth()
+    else -> this.lengthOfMonth()
+}
+
 internal const val NO_INDEX = -1
+internal const val MONTH_NAME_PATTERN = "MMMM"
+internal const val HIJRI_YEAR_NAME_PATTERN = "yyyy"
+internal const val HIJRI_MONTH_VALUE_PATTERN = "MM"

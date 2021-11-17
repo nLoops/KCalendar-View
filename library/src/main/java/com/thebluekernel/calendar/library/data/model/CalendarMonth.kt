@@ -1,10 +1,14 @@
 package com.thebluekernel.calendar.library.data.model
 
-import com.thebluekernel.calendar.library.data.utils.formatWithPattern
-import com.thebluekernel.calendar.library.data.utils.toHijri
+import com.thebluekernel.calendar.library.data.utils.*
+import com.thebluekernel.calendar.library.data.utils.daysInMonthLength
+import com.thebluekernel.calendar.library.data.utils.monthName
+import com.thebluekernel.calendar.library.data.utils.monthVal
+import com.thebluekernel.calendar.library.data.utils.yearValue
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.chrono.HijrahDate
 import java.time.temporal.WeekFields
 
 /**
@@ -13,6 +17,9 @@ import java.time.temporal.WeekFields
  * @param month represent current month object
  * @param firstDayOfWeek represent firstDayOfWeek by default SUNDAY
  * @param isHijri flag to tell current day to render into Gregorien or Hijri format
+ *
+ * @see CalendarDay
+ *
  */
 data class CalendarMonth(
     internal val month: YearMonth,
@@ -21,51 +28,45 @@ data class CalendarMonth(
 ) {
     internal val days = generateWeekDays()
 
-    fun getMonthName() = when (isHijri) {
-        true -> getFirstDay().toHijri().formatWithPattern(MONTH_NAME_PATTERN)
-        false -> getFirstDay().formatWithPattern(MONTH_NAME_PATTERN)
-    }
-
-    fun getYear() = when (isHijri) {
-        true -> getFirstDay().toHijri().formatWithPattern(HIJRI_YEAR_NAME_PATTERN)
-        else -> month.year.toString()
-    }
-
-    fun getHijriMonthValue() =
-        getFirstDay().toHijri().formatWithPattern(HIJRI_MONTH_VALUE_PATTERN).toInt()
-
-    internal fun getFirstDay() = LocalDate.of(month.year, month.monthValue, 1)
-
     override fun toString() =
-        "CalendarMonth[${month.monthValue} - ${month.year}]"
-
-    internal companion object {
-        const val MONTH_NAME_PATTERN = "MMMM"
-        const val HIJRI_YEAR_NAME_PATTERN = "yyyy"
-        const val HIJRI_MONTH_VALUE_PATTERN = "MM"
-    }
+        "CalendarMonth[Year: ${month.yearValue(isHijri)} - Month: ${month.monthVal(isHijri)}]"
 }
 
 internal fun CalendarMonth.generateWeekDays(): MutableList<List<CalendarDay>> {
-    val year = month.year
-    val monthValue = month.monthValue
-    val thisMonthDays = (1..month.lengthOfMonth()).map { day ->
-        CalendarDay(LocalDate.of(year, monthValue, day), DayOwner.CURRENT_MONTH, isHijri)
+    val year = month.yearValue(isHijri)
+    val monthValue = month.monthVal(isHijri)
+    val thisMonthDays = (1..month.daysInMonthLength(isHijri)).map { day ->
+        val dayDate = when (isHijri) {
+            true -> LocalDate.from(HijrahDate.of(year, monthValue, day))
+            else -> LocalDate.of(year, monthValue, day)
+        }
+        CalendarDay(dayDate, DayOwner.CURRENT_MONTH, isHijri)
     }
     val weekDaysGroup = run {
         // Group days by week of month so we can add the in dates if necessary.
         val weekOfMonthField = WeekFields.of(firstDayOfWeek, 1).weekOfMonth()
         val groupByWeekOfMonth =
-            thisMonthDays.groupBy { it.date.get(weekOfMonthField) }.values.toMutableList()
+            thisMonthDays.groupBy {
+                when (isHijri) {
+                    true -> it.date.toHijri().get(weekOfMonthField)
+                    false -> it.date.get(weekOfMonthField)
+                }
+            }.values.toMutableList()
 
         // Add in-dates if necessary
         val firstWeek = groupByWeekOfMonth.first()
         if (firstWeek.size < 7) {
-            val previousMonth = month.minusMonths(1)
-            val inDates = (1..previousMonth.lengthOfMonth()).toList()
-                .takeLast(7 - firstWeek.size).map {
+            val previousMonth = month.previous
+            val prevYear = previousMonth.yearValue(isHijri)
+            val prevMonthValue = previousMonth.monthVal(isHijri)
+            val inDates = (1..previousMonth.daysInMonthLength(isHijri)).toList()
+                .takeLast(7 - firstWeek.size).map { day ->
+                    val dayDate = when (isHijri) {
+                        true -> LocalDate.from(HijrahDate.of(prevYear, prevMonthValue, day))
+                        else -> LocalDate.of(prevYear, prevMonthValue, day)
+                    }
                     CalendarDay(
-                        LocalDate.of(previousMonth.year, previousMonth.month, it),
+                        dayDate,
                         DayOwner.PREV_MONTH,
                         isHijri
                     )
@@ -76,3 +77,7 @@ internal fun CalendarMonth.generateWeekDays(): MutableList<List<CalendarDay>> {
     }
     return weekDaysGroup
 }
+
+fun CalendarMonth.monthName() = this.month.monthName(isHijri)
+
+fun CalendarMonth.yearValue() = this.month.yearValue(isHijri)
