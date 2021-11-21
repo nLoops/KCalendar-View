@@ -9,6 +9,9 @@ import com.thebluekernel.calendar.library.R
 import com.thebluekernel.calendar.library.data.model.*
 import com.thebluekernel.calendar.library.data.ui.CalendarDayBinder
 import com.thebluekernel.calendar.library.data.ui.CalendarMonthBinder
+import com.thebluekernel.calendar.library.data.utils.FIRST_MONTH_OF_YEAR_INDEX
+import com.thebluekernel.calendar.library.data.utils.LAST_MONTH_OF_YEAR_INDEX
+import com.thebluekernel.calendar.library.data.utils.WEEK_DAYS
 import com.thebluekernel.calendar.library.data.utils.next
 import com.thebluekernel.calendar.library.data.utils.previous
 import java.time.DayOfWeek
@@ -35,7 +38,6 @@ open class KCalendarView @JvmOverloads constructor(
     var dayBinder: CalendarDayBinder<*>? = null
         set(value) {
             field = value
-//            invalidateViewHolders()
             render()
         }
 
@@ -47,7 +49,6 @@ open class KCalendarView @JvmOverloads constructor(
             if (field != value) {
                 if (value == 0) throw IllegalArgumentException("Day resource cannot be null.")
                 field = value
-//                updateAdapterViewConfig()
                 render()
             }
         }
@@ -63,7 +64,6 @@ open class KCalendarView @JvmOverloads constructor(
     var monthBinder: CalendarMonthBinder<*>? = null
         set(value) {
             field = value
-//            invalidateViewHolders()
             render()
         }
 
@@ -75,7 +75,7 @@ open class KCalendarView @JvmOverloads constructor(
             if (field != value) {
                 if (value == 0) throw IllegalArgumentException("Month resource cannot be null.")
                 field = value
-                updateAdapterViewConfig()
+                render()
             }
         }
 
@@ -100,23 +100,27 @@ open class KCalendarView @JvmOverloads constructor(
         set(value) {
             if (field != value) {
                 field = value
-                // TODO: 02/11/2021 need to re-render calendar.
+                render()
             }
         }
 
     /**
      * min year of calendar can be passed via XML
+     *
+     * default is one year before now
      */
     var calendarMinYear = Year.now().minusYears(1).value
         set(value) {
             if (field != value) {
                 field = value
-                /// TODO: 02/11/2021 need to re-render the calendar.
+                render()
             }
         }
 
     /**
      * max year of calendar can be passed via XML
+     *
+     * default is one year after now
      */
     var calendarMaxYear = Year.now().plusYears(1).value
         set(value) {
@@ -130,10 +134,13 @@ open class KCalendarView @JvmOverloads constructor(
         set(value) {
             if (field != value) {
                 field = value
-                // TODO: 02/11/2021 re-render it.
+                render()
             }
         }
 
+    /**
+     * the size of day cell by default it's square width = height
+     */
     var dayItemSize: Size = SIZE_SQUARE
         set(value) {
             if (field != value) {
@@ -141,10 +148,6 @@ open class KCalendarView @JvmOverloads constructor(
                 render()
             }
         }
-
-    /// TODO: 02/11/2021 need to reactive to min/max year
-    var startMonth: YearMonth = YearMonth.of(calendarMinYear, 1)
-    var endMonth: YearMonth = YearMonth.of(calendarMaxYear, 12)
 
     private val calendarLayoutManager: KCalendarLayoutManager
         get() = layoutManager as KCalendarLayoutManager
@@ -188,6 +191,12 @@ open class KCalendarView @JvmOverloads constructor(
 
     internal val isVertical: Boolean
         get() = orientation == VERTICAL
+
+    internal val isHijri: Boolean
+        get() = when (calendarType) {
+            CalendarType.GREGORIAN -> false
+            CalendarType.HIJRI -> true
+        }
 
     init {
         initWithStyledAttributes()
@@ -233,7 +242,7 @@ open class KCalendarView @JvmOverloads constructor(
                 throw UnsupportedOperationException("Cannot calculate the values for day Width/Height with the current configuration.")
             }
             // +0.5 => round to the nearest pixel
-            val size = ((widthSize / 7f) + 0.5).toInt()
+            val size = ((widthSize / WEEK_DAYS.toFloat()) + 0.5).toInt()
             val newSize = dayItemSize.copy(width = size, height = size)
             if (dayItemSize != newSize) {
                 dayItemSize = newSize
@@ -242,30 +251,15 @@ open class KCalendarView @JvmOverloads constructor(
         super.onMeasure(widthSpec, heightSpec)
     }
 
-    private fun invalidateViewHolders() {
-        if (adapter == null || layoutManager == null) return
-        val state = layoutManager?.onSaveInstanceState()
-        adapter = adapter
-        layoutManager?.onRestoreInstanceState(state)
-    }
-
-    private fun updateAdapterViewConfig() {
-        if (adapter != null) {
-//            calendarAdapter.viewConfig =
-//                ViewConfig(dayViewResource, monthHeaderResource, monthFooterResource, monthViewClass)
-            invalidateViewHolders()
-        }
-    }
-
+    // TODO: 21/11/2021 for better performance if already we have adapter just notify data changed
+    // instead of create new instance.
     private fun render() {
-        val isHijri = when (calendarType) {
-            CalendarType.HIJRI -> true
-            CalendarType.GREGORIAN -> false
-            else -> false
-        }
-        val calendarCreator = CalendarRangeCreator(startMonth, endMonth, firstDayOfWeek, isHijri)
-        adapter = KCalendarViewAdapter(this, calendarCreator)
-        if (orientation == HORIZONTAL) pagerSnapHelper.attachToRecyclerView(this)
+        setListAdapter()
+        setListScrollHelper()
+        setListLayoutManager()
+    }
+
+    private fun setListLayoutManager() {
         val month = when (isHijri) {
             true -> YearMonth.now().next
             else -> YearMonth.now()
@@ -274,8 +268,24 @@ open class KCalendarView @JvmOverloads constructor(
             .apply { scrollToMonth(month) }
     }
 
+    private fun setListScrollHelper() {
+        if (orientation == HORIZONTAL) pagerSnapHelper.attachToRecyclerView(this)
+    }
+
+    private fun setListAdapter() {
+        val calendarCreator = getCalendarCreator(isHijri)
+        adapter = KCalendarViewAdapter(this, calendarCreator)
+    }
+
+    private fun getCalendarCreator(isHijri: Boolean): CalendarRangeCreator {
+        val startMonth = YearMonth.of(calendarMinYear, FIRST_MONTH_OF_YEAR_INDEX)
+        val endMonth = YearMonth.of(calendarMaxYear, LAST_MONTH_OF_YEAR_INDEX)
+        return CalendarRangeCreator(startMonth, endMonth, firstDayOfWeek, isHijri)
+    }
+
     private fun scrollTo(month: YearMonth) = calendarLayoutManager.smoothScrollToMonth(month)
 
+    // region PUBLIC METHODS
     fun scrollToNext(month: YearMonth) = scrollTo(month.next)
 
     fun scrollToPrev(month: YearMonth) = scrollTo(month.previous)
@@ -283,6 +293,8 @@ open class KCalendarView @JvmOverloads constructor(
     fun notifyDayChanged(day: CalendarDay) = calendarAdapter.reloadDay(day)
 
     fun notifyMonthChanged(day: CalendarDay) = calendarAdapter.reloadMonth(day.getMonth())
+
+    // endregion
 
     companion object {
         private const val SQUARE = Int.MIN_VALUE

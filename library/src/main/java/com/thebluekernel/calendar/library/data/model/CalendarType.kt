@@ -5,6 +5,5 @@ package com.thebluekernel.calendar.library.data.model
  */
 enum class CalendarType {
     GREGORIAN,
-    HIJRI,
-    BOTH
+    HIJRI
 }
