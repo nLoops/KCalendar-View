@@ -12,10 +12,7 @@ import com.thebluekernel.calendar.demo.R
 import com.thebluekernel.calendar.demo.databinding.FragmentEventExampleBinding
 import com.thebluekernel.calendar.demo.utils.CalendarEventDayContainer
 import com.thebluekernel.calendar.demo.utils.MonthViewContainer
-import com.thebluekernel.calendar.library.data.model.CalendarDay
-import com.thebluekernel.calendar.library.data.model.CalendarMonth
-import com.thebluekernel.calendar.library.data.model.monthName
-import com.thebluekernel.calendar.library.data.model.yearValue
+import com.thebluekernel.calendar.library.data.model.*
 import com.thebluekernel.calendar.library.data.ui.CalendarDayBinder
 import com.thebluekernel.calendar.library.data.ui.CalendarMonthBinder
 import java.time.LocalDate
@@ -40,6 +37,12 @@ class EventCalendarExampleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initCalendarView()
+        setOnClickListener()
+    }
+
+    private fun setOnClickListener() = with(binding){
+        tvCalendarGregorian.setOnClickListener { calendarView.calendarType = CalendarType.GREGORIAN }
+        tvCalendarHijri.setOnClickListener { calendarView.calendarType = CalendarType.HIJRI }
     }
 
     private fun initCalendarView() = with(binding) {
