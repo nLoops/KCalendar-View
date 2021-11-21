@@ -30,7 +30,7 @@ internal fun TemporalAccessor.formatWithPattern(
     return formatter.format(this)
 }
 
-fun daysOfWeekFromLocale(startDayOfWeek: DayOfWeek): Array<DayOfWeek> {
+internal fun daysOfWeekFromLocale(startDayOfWeek: DayOfWeek): Array<DayOfWeek> {
     var daysOfWeek = DayOfWeek.values()
     // Order `daysOfWeek` array so that firstDayOfWeek is at index 0.
     // Only necessary if firstDayOfWeek != DayOfWeek.MONDAY which has ordinal 0.
@@ -77,6 +77,9 @@ internal fun YearMonth.daysInMonthLength(isHijri: Boolean) = when (isHijri) {
     else -> this.lengthOfMonth()
 }
 
+internal const val LAST_MONTH_OF_YEAR_INDEX = 12
+internal const val FIRST_MONTH_OF_YEAR_INDEX = 1
+internal const val WEEK_DAYS = 7
 internal const val NO_INDEX = -1
 internal const val MONTH_NAME_PATTERN = "MMMM"
 internal const val HIJRI_YEAR_NAME_PATTERN = "yyyy"
