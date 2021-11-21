@@ -1,0 +1,31 @@
+ext {
+    target_sdk_version = 31
+    min_sdk_version = 21
+
+    // common dependencies versions
+    kotlin_ktx_version = "1.7.0"
+    androidx_appcompat_version = "1.4.0"
+    google_material_version = "1.4.0"
+    constraintlayout_version = "2.1.1"
+
+    // testing dependencies versions
+    junit_version = "4.13"
+    android_junit_version = "1.1.3"
+    android_esspresso_version = "3.4.0"
+
+    common_dependencies = [
+            "androidx.core:core-ktx:$kotlin_ktx_version",
+            "androidx.appcompat:appcompat:$androidx_appcompat_version",
+            "com.google.android.material:material:$google_material_version",
+            "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
+    ]
+
+    unit_test_dependencies = [
+            "junit:junit:$junit_version"
+    ]
+
+    android_test_dependencies = [
+            "androidx.test.ext:junit:$android_junit_version",
+            "androidx.test.espresso:espresso-core:$android_esspresso_version"
+    ]
+}
