@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
+
+    <LinearLayout
+        android:id="@+id/rootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/normal_space">
+
+        <TextView
+            android:id="@+id/tvBasicExample"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_card_height"
+            android:background="@color/white"
+            android:foreground="?selectableItemBackground"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/small_space"
+            android:text="Basic Example"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+        <TextView
+            android:id="@+id/tvEventsExample"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_card_height"
+            android:layout_marginTop="@dimen/small_space"
+            android:background="@color/white"
+            android:foreground="?selectableItemBackground"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/small_space"
+            android:text="Calendar With Events Example"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+
+    </LinearLayout>
+</ScrollView>

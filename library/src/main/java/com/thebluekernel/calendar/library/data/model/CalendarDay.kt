@@ -41,6 +41,8 @@ data class CalendarDay(
 
     fun isAfterToday() = date.isAfter(today())
 
+    fun isEqualTo(other: LocalDate) = date.isEqual(other)
+
     internal fun getMonth(): YearMonth = YearMonth.of(date.year, date.monthValue)
 
 }

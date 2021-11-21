@@ -7,6 +7,7 @@ ext {
     androidx_appcompat_version = "1.4.0"
     google_material_version = "1.4.0"
     constraintlayout_version = "2.1.1"
+    navigation_version = "2.3.5"
 
     // testing dependencies versions
     junit_version = "4.13"
@@ -17,7 +18,10 @@ ext {
             "androidx.core:core-ktx:$kotlin_ktx_version",
             "androidx.appcompat:appcompat:$androidx_appcompat_version",
             "com.google.android.material:material:$google_material_version",
-            "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
+            "androidx.constraintlayout:constraintlayout:$constraintlayout_version",
+            // Navigation
+            "androidx.navigation:navigation-fragment-ktx:$navigation_version",
+            "androidx.navigation:navigation-ui-ktx:$navigation_version"
     ]
 
     unit_test_dependencies = [
