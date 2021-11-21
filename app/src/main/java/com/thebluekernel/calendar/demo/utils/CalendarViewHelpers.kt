@@ -3,6 +3,7 @@ package com.thebluekernel.calendar.demo.utils
 import android.content.Context
 import android.view.View
 import com.thebluekernel.calendar.demo.databinding.ItemDayLayoutBinding
+import com.thebluekernel.calendar.demo.databinding.ItemEventCalendarDayLayoutBinding
 import com.thebluekernel.calendar.demo.databinding.ItemMonthResLayoutBinding
 import com.thebluekernel.calendar.library.data.model.CalendarDay
 import com.thebluekernel.calendar.library.data.model.CalendarMonth
@@ -17,6 +18,12 @@ class DayViewContainer(view: View) : CalendarViewHolder(view) {
     lateinit var day: CalendarDay
     val dayTextView = ItemDayLayoutBinding.bind(view).dayTextView
     val context: Context = dayTextView.context
+}
+
+// Event day class instance
+class CalendarEventDayContainer(view: View) : CalendarViewHolder(view) {
+    lateinit var day: CalendarDay
+    val binding = ItemEventCalendarDayLayoutBinding.bind(view)
 }
 
 // Month class instance

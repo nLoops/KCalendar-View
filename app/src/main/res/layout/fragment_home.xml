@@ -22,6 +22,18 @@
             android:text="Basic Example"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
+        <TextView
+            android:id="@+id/tvEventsExample"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_card_height"
+            android:layout_marginTop="@dimen/small_space"
+            android:background="@color/white"
+            android:foreground="?selectableItemBackground"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/small_space"
+            android:text="Calendar With Events Example"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
 
     </LinearLayout>
 </ScrollView>

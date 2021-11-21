@@ -42,7 +42,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun setOnClickListener() = with(binding) {
-        tvBasicExample.setOnClickListener {navigateTo(directions.actionHomeFragmentToBasicCalendarExampleFragment())}
+        tvBasicExample.setOnClickListener { navigateTo(directions.actionHomeFragmentToBasicCalendarExampleFragment()) }
+        tvEventsExample.setOnClickListener { navigateTo(directions.actionHomeFragmentToEventCalendarExampleFragment()) }
     }
 
     private fun navigateTo(directions: NavDirections) {

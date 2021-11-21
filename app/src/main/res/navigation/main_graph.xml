@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_homeFragment_to_basicCalendarExampleFragment"
             app:destination="@id/basicCalendarExampleFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_eventCalendarExampleFragment"
+            app:destination="@id/eventCalendarExampleFragment" />
     </fragment>
     <fragment
         android:id="@+id/basicCalendarExampleFragment"
         android:name="com.thebluekernel.calendar.demo.examples.BasicCalendarExampleFragment"
         android:label="BasicCalendarExampleFragment"
         tools:layout="@layout/fragment_basic_example" />
+    <fragment
+        android:id="@+id/eventCalendarExampleFragment"
+        android:name="com.thebluekernel.calendar.demo.examples.EventCalendarExampleFragment"
+        android:label="EventCalendarExampleFragment"
+        tools:layout="@layout/fragment_event_example" />
 </navigation>
