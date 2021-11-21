@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="default_card_height">56dp</dimen>
+    <dimen name="normal_space">16dp</dimen>
+    <dimen name="small_space">8dp</dimen>
+</resources>

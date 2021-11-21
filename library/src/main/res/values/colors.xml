@@ -6,4 +6,5 @@
     <color name="colorCalendarTextSelected">#000000</color>
     <color name="colorCalendarTextToday">#048998</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBackground">#f4f5fa</color>
 </resources>
