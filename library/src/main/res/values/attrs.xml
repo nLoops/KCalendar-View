@@ -41,5 +41,8 @@
             <enum name="sunday" value="6" />
         </attr>
 
+        <!-- reference for week day text style -->
+        <attr name="cal_WeekTextStyle" format="reference" />
+
     </declare-styleable>
 </resources>

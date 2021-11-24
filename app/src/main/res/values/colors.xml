@@ -7,4 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="colorWeekText">#45495F</color>
+    <color name="colorMonthBackground">#5D6F80</color>
+    <color name="colorCalendarTextUnselected">#C1C7D0</color>
+    <color name="colorCalendarTextSelected">#000000</color>
+    <color name="colorCalendarTextToday">#048998</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBackground">#f4f5fa</color>
+    <color name="colorCalendarEvent">#209F9F</color>
+    <color name="colorCalendarPersonalEvent">#f0b429</color>
 </resources>

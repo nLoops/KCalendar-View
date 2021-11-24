@@ -43,10 +43,31 @@
             app:cal_calendarMinYear="2021"
             app:cal_calendarStartOfWeek="sunday"
             app:cal_calendarType="gregorian"
+            app:cal_WeekTextStyle="@style/Widget.Calendar.Week.Text"
             app:cal_dayViewRes="@layout/item_day_layout"
             app:cal_locale="en"
             app:cal_monthViewRes="@layout/item_month_res_layout"
             app:cal_scrollDirection="horizontal" />
     </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/btnArabic"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/normal_space"
+        android:text="عربي"
+        app:layout_constraintStart_toStartOf="@id/calendarViewHolder"
+        app:layout_constraintTop_toBottomOf="@id/calendarViewHolder" />
+
+    <Button
+        android:id="@+id/btnEnglish"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/normal_space"
+        android:text="English"
+        app:layout_constraintEnd_toEndOf="@id/calendarViewHolder"
+        app:layout_constraintTop_toBottomOf="@id/calendarViewHolder" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

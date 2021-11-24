@@ -8,6 +8,7 @@ ext {
     google_material_version = "1.2.1"
     constraintlayout_version = "2.0.1"
     navigation_version = "2.3.0"
+    airbnb_paris_version = "2.0.0"
 
     // testing dependencies versions
     junit_version = "4.13"
@@ -21,7 +22,9 @@ ext {
             "androidx.constraintlayout:constraintlayout:$constraintlayout_version",
             // Navigation
             "androidx.navigation:navigation-fragment-ktx:$navigation_version",
-            "androidx.navigation:navigation-ui-ktx:$navigation_version"
+            "androidx.navigation:navigation-ui-ktx:$navigation_version",
+            // Paris for style views
+            "com.airbnb.android:paris:$airbnb_paris_version"
     ]
 
     unit_test_dependencies = [

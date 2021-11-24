@@ -3,12 +3,14 @@ package com.thebluekernel.calendar.library.data.ui.monthlist
 import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.Px
+import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
 import androidx.recyclerview.widget.RecyclerView
 import com.thebluekernel.calendar.library.R
 import com.thebluekernel.calendar.library.data.model.*
 import com.thebluekernel.calendar.library.data.ui.CalendarDayBinder
 import com.thebluekernel.calendar.library.data.ui.CalendarMonthBinder
+import com.thebluekernel.calendar.library.data.utils.*
 import com.thebluekernel.calendar.library.data.utils.FIRST_MONTH_OF_YEAR_INDEX
 import com.thebluekernel.calendar.library.data.utils.LAST_MONTH_OF_YEAR_INDEX
 import com.thebluekernel.calendar.library.data.utils.WEEK_DAYS
@@ -17,6 +19,7 @@ import com.thebluekernel.calendar.library.data.utils.previous
 import java.time.DayOfWeek
 import java.time.Year
 import java.time.YearMonth
+import java.util.*
 
 /**
  * Created by Ahmed Ibrahim on 31,October,2021
@@ -74,6 +77,17 @@ open class KCalendarView @JvmOverloads constructor(
         set(value) {
             if (field != value) {
                 if (value == 0) throw IllegalArgumentException("Month resource cannot be null.")
+                field = value
+                render()
+            }
+        }
+
+    /** style resource of week day text **/
+    @StyleRes
+    var weekTextStyle = R.style.Calendar_Widget_Week_Text_Style
+        set(value) {
+            if (field != value) {
+                if (value == 0) throw IllegalArgumentException("Week text style cannot be null.")
                 field = value
                 render()
             }
@@ -192,7 +206,7 @@ open class KCalendarView @JvmOverloads constructor(
     internal val isVertical: Boolean
         get() = orientation == VERTICAL
 
-    internal val isHijri: Boolean
+    private val isHijri: Boolean
         get() = when (calendarType) {
             CalendarType.GREGORIAN -> false
             CalendarType.HIJRI -> true
@@ -228,9 +242,14 @@ open class KCalendarView @JvmOverloads constructor(
                 R.styleable.CalendarMonthList_cal_calendarStartOfWeek,
                 firstDayOfWeek.ordinal
             )]
+            weekTextStyle = getResourceId(
+                R.styleable.CalendarMonthList_cal_WeekTextStyle,
+                weekTextStyle
+            )
         }
         check(dayViewRes != 0) { "dayViewRes not provided" }
         check(monthViewRes != 0) { "monthViewRes not provided" }
+        check(weekTextStyle != 0) { "week text style not provided" }
     }
 
     override fun onMeasure(widthSpec: Int, heightSpec: Int) {
@@ -293,6 +312,8 @@ open class KCalendarView @JvmOverloads constructor(
     fun notifyDayChanged(day: CalendarDay) = calendarAdapter.reloadDay(day)
 
     fun notifyMonthChanged(day: CalendarDay) = calendarAdapter.reloadMonth(day.getMonth())
+
+    fun getMonthName(month: CalendarMonth) = month.month.monthName(isHijri, Locale(calendarLocale))
 
     // endregion
 

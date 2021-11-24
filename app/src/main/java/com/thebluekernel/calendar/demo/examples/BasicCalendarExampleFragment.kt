@@ -8,6 +8,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.thebluekernel.calendar.demo.R
 import com.thebluekernel.calendar.demo.databinding.FragmentBasicExampleBinding
+import com.thebluekernel.calendar.demo.utils.Constants.ARABIC_LOCALE
+import com.thebluekernel.calendar.demo.utils.Constants.ENGLISH_LOCALE
 import com.thebluekernel.calendar.demo.utils.DayViewContainer
 import com.thebluekernel.calendar.demo.utils.MonthViewContainer
 import com.thebluekernel.calendar.library.data.model.CalendarDay
@@ -38,6 +40,7 @@ class BasicCalendarExampleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initCalendarView()
+        setOnClickListener()
     }
 
     private fun initCalendarView() = with(binding) {
@@ -48,7 +51,7 @@ class BasicCalendarExampleFragment : Fragment() {
                 with(holder) {
                     this.day = day
                     val formattedDate = day.getFormatted(DEFAULT_DATE_PATTERN)
-                    dayTextView.text = day.getFormatted("dd")
+                    dayTextView.text = day.getFormatted("d")
                     dayTextView.setOnClickListener {
                         selectedDate = formattedDate
                         calendarView.notifyMonthChanged(day)
@@ -106,7 +109,7 @@ class BasicCalendarExampleFragment : Fragment() {
                     this.month = month
                     with(binding) {
                         tvMonthName.text =
-                            month.monthName().plus(" ").plus(month.yearValue())
+                            calendarView.getMonthName(month).plus(" ").plus(month.yearValue())
                         btnArrowNext.setOnClickListener { calendarView.scrollToNext(month.month) }
                         btnArrowPrev.setOnClickListener { calendarView.scrollToPrev(month.month) }
                     }
@@ -116,6 +119,11 @@ class BasicCalendarExampleFragment : Fragment() {
         }
         calendarView.dayBinder = dayBinder
         calendarView.monthBinder = monthBinder
+    }
+
+    private fun setOnClickListener() = with(binding) {
+        btnArabic.setOnClickListener { calendarView.calendarLocale = ARABIC_LOCALE }
+        btnEnglish.setOnClickListener { calendarView.calendarLocale = ENGLISH_LOCALE }
     }
 
     companion object {

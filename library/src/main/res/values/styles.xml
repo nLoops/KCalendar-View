@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Calendar.Widget.Week.Text.Style" parent="">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+</resources>
