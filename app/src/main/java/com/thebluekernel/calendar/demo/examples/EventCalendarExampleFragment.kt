@@ -55,7 +55,7 @@ class EventCalendarExampleFragment : Fragment() {
                     this.month = month
                     with(binding) {
                         tvMonthName.text =
-                            month.monthName().plus(" ").plus(month.yearValue())
+                            calendarView.getMonthName(month).plus(" ").plus(month.yearValue())
                         btnArrowNext.setOnClickListener { calendarView.scrollToNext(month.month) }
                         btnArrowPrev.setOnClickListener { calendarView.scrollToPrev(month.month) }
                     }

@@ -9,7 +9,9 @@ import androidx.core.view.marginBottom
 import androidx.core.view.marginTop
 import androidx.core.view.updateLayoutParams
 import com.thebluekernel.calendar.library.R
+import com.thebluekernel.calendar.library.data.model.ARABIC_LOCALE
 import com.thebluekernel.calendar.library.data.model.CalendarDay
+import com.thebluekernel.calendar.library.data.model.DEFAULT_LOCALE
 import com.thebluekernel.calendar.library.data.utils.daysOfWeekFromLocale
 import com.thebluekernel.calendar.library.data.utils.inflate
 import java.time.format.TextStyle
@@ -22,7 +24,7 @@ import java.util.*
 internal class WeekViewHolder(private val dayHolders: List<DayViewHolder>) {
     private lateinit var view: LinearLayout
 
-    fun inflate(parent: LinearLayout): View {
+    fun inflate(parent: LinearLayout,locale:String): View {
         view = LinearLayout(parent.context).apply {
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -30,6 +32,11 @@ internal class WeekViewHolder(private val dayHolders: List<DayViewHolder>) {
             )
             orientation = LinearLayout.HORIZONTAL
             weightSum = dayHolders.count().toFloat()
+            layoutDirection = when (locale) {
+                ARABIC_LOCALE -> View.LAYOUT_DIRECTION_RTL
+                DEFAULT_LOCALE -> View.LAYOUT_DIRECTION_LTR
+                else -> View.LAYOUT_DIRECTION_LTR
+            }
             for (holder in dayHolders) {
                 addView(holder.inflate(this))
             }
