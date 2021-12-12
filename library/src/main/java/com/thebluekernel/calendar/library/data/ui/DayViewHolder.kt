@@ -26,7 +26,8 @@ internal class DayViewHolder(private val params: BindingParams) {
             // equally cause each row holds 7 days or represent a week
             updateLayoutParams<LinearLayout.LayoutParams> {
                 width = params.calendarSize.width - marginStart - marginEnd
-                height = params.calendarSize.height - marginTop - marginBottom
+                /*params.calendarSize.height*/
+                height = this.height - marginTop - marginBottom
                 weight = 1f
             }
         }
