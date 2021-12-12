@@ -22,14 +22,6 @@ internal fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean 
     return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 }
 
-internal fun TemporalAccessor.formatWithPattern(
-    pattern: String,
-    locale: Locale = Locale.getDefault()
-): String {
-    val formatter = DateTimeFormatter.ofPattern(pattern, locale)
-    return formatter.format(this)
-}
-
 internal fun daysOfWeekFromLocale(startDayOfWeek: DayOfWeek): Array<DayOfWeek> {
     var daysOfWeek = DayOfWeek.values()
     // Order `daysOfWeek` array so that firstDayOfWeek is at index 0.
@@ -54,27 +46,36 @@ internal val YearMonth.next: YearMonth
 internal val YearMonth.previous: YearMonth
     get() = this.minusMonths(1)
 
-internal fun YearMonth.firstDay() = LocalDate.of(this.year, this.monthValue, 1)
-
 internal fun YearMonth.monthName(isHijri: Boolean, locale: Locale = Locale.getDefault()) =
     when (isHijri) {
         true -> firstDay().toHijri().formatWithPattern(MONTH_NAME_PATTERN, locale)
         false -> firstDay().formatWithPattern(MONTH_NAME_PATTERN, locale)
     }
 
-internal fun YearMonth.yearValue(isHijri: Boolean) = when (isHijri) {
+internal fun YearMonth.daysInMonthLength(isHijri: Boolean) = when (isHijri) {
+    true -> firstDay().toHijri().lengthOfMonth()
+    else -> this.lengthOfMonth()
+}
+
+
+fun TemporalAccessor.formatWithPattern(
+    pattern: String,
+    locale: Locale = Locale.getDefault()
+): String {
+    val formatter = DateTimeFormatter.ofPattern(pattern, locale)
+    return formatter.format(this)
+}
+
+fun YearMonth.firstDay() = LocalDate.of(this.year, this.monthValue, 1)
+
+fun YearMonth.yearValue(isHijri: Boolean) = when (isHijri) {
     true -> firstDay().toHijri().formatWithPattern(HIJRI_YEAR_NAME_PATTERN).toInt()
     else -> this.year
 }
 
-internal fun YearMonth.monthVal(isHijri: Boolean) = when (isHijri) {
+fun YearMonth.monthVal(isHijri: Boolean) = when (isHijri) {
     true -> firstDay().toHijri().formatWithPattern(HIJRI_MONTH_VALUE_PATTERN).toInt()
     else -> this.monthValue
-}
-
-internal fun YearMonth.daysInMonthLength(isHijri: Boolean) = when (isHijri) {
-    true -> firstDay().toHijri().lengthOfMonth()
-    else -> this.lengthOfMonth()
 }
 
 internal const val LAST_MONTH_OF_YEAR_INDEX = 12
