@@ -57,7 +57,7 @@ afterEvaluate {
                 // You can then customize attributes of the publication as shown below.
                 groupId = 'com.thebluekernel'
                 artifactId = 'kcalendar_view'
-                version = '1.0.0-alpha08'
+                version = '1.0.0-alpha09'
             }
         }
     }
