@@ -44,5 +44,8 @@
         <!-- reference for week day text style -->
         <attr name="cal_WeekTextStyle" format="reference" />
 
+        <!-- enable or disable swipe | by default it's enabled -->
+        <attr name="cal_enableCalendarSwipe" format="boolean"/>
+
     </declare-styleable>
 </resources>

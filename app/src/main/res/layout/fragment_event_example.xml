@@ -55,6 +55,7 @@
                 app:cal_calendarStartOfWeek="sunday"
                 app:cal_calendarType="gregorian"
                 app:cal_dayViewRes="@layout/item_event_calendar_day_layout"
+                app:cal_enableCalendarSwipe="true"
                 app:cal_locale="en"
                 app:cal_monthViewRes="@layout/item_month_res_layout"
                 app:cal_scrollDirection="horizontal" />

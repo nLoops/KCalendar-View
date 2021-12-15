@@ -11,11 +11,6 @@ import com.thebluekernel.calendar.library.data.model.*
 import com.thebluekernel.calendar.library.data.ui.CalendarDayBinder
 import com.thebluekernel.calendar.library.data.ui.CalendarMonthBinder
 import com.thebluekernel.calendar.library.data.utils.*
-import com.thebluekernel.calendar.library.data.utils.FIRST_MONTH_OF_YEAR_INDEX
-import com.thebluekernel.calendar.library.data.utils.LAST_MONTH_OF_YEAR_INDEX
-import com.thebluekernel.calendar.library.data.utils.WEEK_DAYS
-import com.thebluekernel.calendar.library.data.utils.next
-import com.thebluekernel.calendar.library.data.utils.previous
 import java.time.DayOfWeek
 import java.time.Year
 import java.time.YearMonth
@@ -163,6 +158,14 @@ open class KCalendarView @JvmOverloads constructor(
             }
         }
 
+    var enableCalendarSwipe = true
+        set(value) {
+            if (field != value) {
+                field = value
+                render()
+            }
+        }
+
     private val calendarLayoutManager: KCalendarLayoutManager
         get() = layoutManager as KCalendarLayoutManager
 
@@ -246,6 +249,10 @@ open class KCalendarView @JvmOverloads constructor(
                 R.styleable.CalendarMonthList_cal_WeekTextStyle,
                 weekTextStyle
             )
+            enableCalendarSwipe = getBoolean(
+                R.styleable.CalendarMonthList_cal_enableCalendarSwipe,
+                enableCalendarSwipe
+            )
         }
         check(dayViewRes != 0) { "dayViewRes not provided" }
         check(monthViewRes != 0) { "monthViewRes not provided" }
@@ -284,7 +291,10 @@ open class KCalendarView @JvmOverloads constructor(
             else -> YearMonth.now()
         }
         layoutManager = KCalendarLayoutManager(this, orientation)
-            .apply { scrollToMonth(month) }
+            .apply {
+                setScrollEnabled(enableCalendarSwipe)
+                scrollToMonth(month)
+            }
     }
 
     private fun setListScrollHelper() {
@@ -302,7 +312,12 @@ open class KCalendarView @JvmOverloads constructor(
         return CalendarRangeCreator(startMonth, endMonth, firstDayOfWeek, isHijri)
     }
 
-    private fun scrollTo(month: YearMonth) = calendarLayoutManager.smoothScrollToMonth(month)
+    private fun scrollTo(month: YearMonth) = with(calendarLayoutManager) {
+        setScrollEnabled(true)
+        calendarLayoutManager.smoothScrollToMonth(month){
+            setScrollEnabled(enableCalendarSwipe)
+        }
+    }
 
     // region PUBLIC METHODS
     fun scrollToNext(month: YearMonth) = scrollTo(month.next)
@@ -312,6 +327,8 @@ open class KCalendarView @JvmOverloads constructor(
     fun notifyDayChanged(day: CalendarDay) = calendarAdapter.reloadDay(day)
 
     fun notifyMonthChanged(day: CalendarDay) = calendarAdapter.reloadMonth(day.getMonth())
+
+    fun notifyMonthChanged(month: YearMonth) = calendarAdapter.reloadMonth(month)
 
     fun getMonthName(month: CalendarMonth) = month.month.monthName(isHijri, Locale(calendarLocale))
 

@@ -18,8 +18,18 @@ internal class KCalendarLayoutManager(
     @RecyclerView.Orientation orientation: Int
 ) : LinearLayoutManager(kCalendarView.context, orientation, false) {
 
+    private var isScrollEnabled = true
+
     private val adapter: KCalendarViewAdapter
         get() = kCalendarView.adapter as KCalendarViewAdapter
+
+    override fun canScrollHorizontally(): Boolean {
+        return isScrollEnabled && super.canScrollHorizontally()
+    }
+
+    internal fun setScrollEnabled(isEnabled: Boolean) {
+        isScrollEnabled = isEnabled
+    }
 
     fun scrollToMonth(month: YearMonth) {
         val position = adapter.getAdapterPosition(month)
@@ -28,10 +38,10 @@ internal class KCalendarLayoutManager(
 //        calView.post { adapter.notifyMonthScrollListenerIfNeeded() }
     }
 
-    fun smoothScrollToMonth(month: YearMonth) {
+    fun smoothScrollToMonth(month: YearMonth, onFinished: () -> Unit) {
         val position = adapter.getAdapterPosition(month)
         if (position == NO_INDEX) return
-        startSmoothScroll(CalendarSmoothScroller(position, null))
+        startSmoothScroll(CalendarSmoothScroller(position, null,onFinished))
     }
 
     private fun calculateDayViewOffsetInParent(day: CalendarDay, itemView: View): Int {
@@ -42,7 +52,10 @@ internal class KCalendarLayoutManager(
         return if (kCalendarView.isVertical) rect.top + kCalendarView.monthMarginTop else rect.left + kCalendarView.monthMarginStart
     }
 
-    private inner class CalendarSmoothScroller(position: Int, val day: CalendarDay?) :
+    private inner class CalendarSmoothScroller(
+        position: Int, val day: CalendarDay?,
+        val onFinished: () -> Unit
+    ) :
         LinearSmoothScroller(kCalendarView.context) {
 
         init {
@@ -69,6 +82,11 @@ internal class KCalendarLayoutManager(
             }
             val offset = calculateDayViewOffsetInParent(day, view)
             return dx - offset
+        }
+
+        override fun onStop() {
+            super.onStop()
+            onFinished.invoke()
         }
     }
 }

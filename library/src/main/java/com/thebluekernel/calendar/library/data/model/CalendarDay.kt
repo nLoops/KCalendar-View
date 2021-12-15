@@ -3,13 +3,9 @@ package com.thebluekernel.calendar.library.data.model
 import com.thebluekernel.calendar.library.data.utils.formatWithPattern
 import com.thebluekernel.calendar.library.data.utils.toHijri
 import com.thebluekernel.calendar.library.data.utils.today
-import com.thebluekernel.calendar.library.data.utils.todayInHijri
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.ZoneOffset
-import java.time.chrono.HijrahDate
-import java.time.format.DateTimeFormatter
-import java.time.temporal.TemporalAdjusters
 
 /**
  * Created by Ahmed Ibrahim on 20,October,2021
@@ -31,6 +27,8 @@ data class CalendarDay(
             else -> date.formatWithPattern(pattern)
         }
     }
+
+    fun getInGregorianString() = date.toString()
 
     fun getInMillis(): Long =
         date.atStartOfDay(ZoneOffset.systemDefault()).toInstant().toEpochMilli()
