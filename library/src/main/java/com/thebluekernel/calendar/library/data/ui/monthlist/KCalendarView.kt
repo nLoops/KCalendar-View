@@ -312,14 +312,15 @@ open class KCalendarView @JvmOverloads constructor(
         return CalendarRangeCreator(startMonth, endMonth, firstDayOfWeek, isHijri)
     }
 
-    private fun scrollTo(month: YearMonth) = with(calendarLayoutManager) {
+
+    // region PUBLIC METHODS
+    fun scrollTo(month: YearMonth) = with(calendarLayoutManager) {
         setScrollEnabled(true)
         calendarLayoutManager.smoothScrollToMonth(month){
             setScrollEnabled(enableCalendarSwipe)
         }
     }
 
-    // region PUBLIC METHODS
     fun scrollToNext(month: YearMonth) = scrollTo(month.next)
 
     fun scrollToPrev(month: YearMonth) = scrollTo(month.previous)

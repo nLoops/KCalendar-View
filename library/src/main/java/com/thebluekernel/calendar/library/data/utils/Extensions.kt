@@ -40,12 +40,6 @@ internal fun todayInHijri() = LocalDate.now().toHijri()
 
 internal fun today() = LocalDate.now()
 
-internal val YearMonth.next: YearMonth
-    get() = this.plusMonths(1)
-
-internal val YearMonth.previous: YearMonth
-    get() = this.minusMonths(1)
-
 internal fun YearMonth.monthName(isHijri: Boolean, locale: Locale = Locale.getDefault()) =
     when (isHijri) {
         true -> firstDay().toHijri().formatWithPattern(MONTH_NAME_PATTERN, locale)
@@ -57,6 +51,11 @@ internal fun YearMonth.daysInMonthLength(isHijri: Boolean) = when (isHijri) {
     else -> this.lengthOfMonth()
 }
 
+val YearMonth.next: YearMonth
+    get() = this.plusMonths(1)
+
+val YearMonth.previous: YearMonth
+    get() = this.minusMonths(1)
 
 fun TemporalAccessor.formatWithPattern(
     pattern: String,
