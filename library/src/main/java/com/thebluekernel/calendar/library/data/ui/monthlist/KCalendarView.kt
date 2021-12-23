@@ -327,9 +327,15 @@ open class KCalendarView @JvmOverloads constructor(
 
     fun notifyDayChanged(day: CalendarDay) = calendarAdapter.reloadDay(day)
 
-    fun notifyMonthChanged(day: CalendarDay) = calendarAdapter.reloadMonth(day.getMonth())
+    fun notifyMonthChanged(day: CalendarDay) = notifyMonthChanged(day.getMonth())
 
-    fun notifyMonthChanged(month: YearMonth) = calendarAdapter.reloadMonth(month)
+    fun notifyMonthChanged(month: YearMonth) {
+        if (calendarType == CalendarType.GREGORIAN) {
+            calendarAdapter.reloadMonth(month)
+        } else {
+            render().also { scrollTo(month) }
+        }
+    }
 
     fun getMonthName(month: CalendarMonth) = month.month.monthName(isHijri, Locale(calendarLocale))
 

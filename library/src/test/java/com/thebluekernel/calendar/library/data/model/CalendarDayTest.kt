@@ -43,4 +43,18 @@ class CalendarDayTest {
         val formattedInHijri = day.getFormatted("yyyy-MM-dd")
         Assert.assertTrue(formattedInHijri == "1438-10-20")
     }
+
+    @Test
+    fun `when call of() ext function on calendar day passing dateString should construct calendar day object`(){
+        val dateString = "2015-11-01"
+        val calendarDay = CalendarDay.of(dateString)
+        Assert.assertTrue(dateString == calendarDay.date.toString())
+    }
+
+    @Test
+    fun `testing deep comparing using equals`(){
+        val date1 = CalendarDay.of("2020-01-01")
+        val date2 = CalendarDay.of("2021-01-01")
+        Assert.assertTrue(date1 != date2)
+    }
 }

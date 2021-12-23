@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import com.thebluekernel.calendar.library.data.model.CalendarDay
 import com.thebluekernel.calendar.library.data.model.CalendarMonth
 import java.time.DayOfWeek
 import java.time.LocalDate

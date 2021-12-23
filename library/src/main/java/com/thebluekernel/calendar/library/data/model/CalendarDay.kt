@@ -1,5 +1,6 @@
 package com.thebluekernel.calendar.library.data.model
 
+import com.thebluekernel.calendar.library.data.utils.DateTimeUtils
 import com.thebluekernel.calendar.library.data.utils.formatWithPattern
 import com.thebluekernel.calendar.library.data.utils.toHijri
 import com.thebluekernel.calendar.library.data.utils.today
@@ -43,6 +44,24 @@ data class CalendarDay(
 
     internal fun getMonth(): YearMonth = YearMonth.of(date.year, date.monthValue)
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as CalendarDay
+        return date == other.date && owner == other.owner
+    }
+
+    override fun hashCode(): Int {
+        return 31 * (date.hashCode() + owner.hashCode())
+    }
+
+    companion object {
+        fun of(dateString: String, isHijri: Boolean = false): CalendarDay {
+            val date = DateTimeUtils.parseDate(dateString)
+            return CalendarDay(date, isHijri = isHijri)
+        }
+    }
 }
 
 /**
