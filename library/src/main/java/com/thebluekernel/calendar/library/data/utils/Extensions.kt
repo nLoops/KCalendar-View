@@ -66,7 +66,7 @@ fun TemporalAccessor.formatWithPattern(
     return formatter.format(this)
 }
 
-fun YearMonth.firstDay() = LocalDate.of(this.year, this.monthValue, 1)
+fun YearMonth.firstDay(): LocalDate = LocalDate.of(this.year, this.monthValue, 1)
 
 fun YearMonth.yearValue(isHijri: Boolean) = when (isHijri) {
     true -> firstDay().toHijri().formatWithPattern(HIJRI_YEAR_NAME_PATTERN).toInt()

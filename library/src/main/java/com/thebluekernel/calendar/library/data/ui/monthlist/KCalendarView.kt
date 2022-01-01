@@ -174,46 +174,14 @@ open class KCalendarView @JvmOverloads constructor(
 
     private val pagerSnapHelper = KCalenderViewSnapHelper()
 
-    /**
-     * The margin, in pixels to be applied
-     * to the start of each month view.
-     */
-    @Px
-    var monthMarginStart = 0
-        private set
-
-    /**
-     * The margin, in pixels to be applied
-     * to the end of each month view.
-     */
-    @Px
-    var monthMarginEnd = 0
-        private set
-
-    /**
-     * The margin, in pixels to be applied
-     * to the top of each month view.
-     */
-    @Px
-    var monthMarginTop = 0
-        private set
-
-    /**
-     * The margin, in pixels to be applied
-     * to the bottom of each month view.
-     */
-    @Px
-    var monthMarginBottom = 0
-        private set
-
-    internal val isVertical: Boolean
-        get() = orientation == VERTICAL
-
     private val isHijri: Boolean
         get() = when (calendarType) {
             CalendarType.GREGORIAN -> false
             CalendarType.HIJRI -> true
         }
+
+    internal val isVertical: Boolean
+        get() = orientation == VERTICAL
 
     init {
         initWithStyledAttributes()
@@ -278,7 +246,7 @@ open class KCalendarView @JvmOverloads constructor(
     }
 
     // TODO: 21/11/2021 for better performance if already we have adapter just notify data changed
-    // instead of create new instance.
+    // instead of create new instance, make a new one setup ASYNC for large ranges of dates.
     private fun render() {
         setListAdapter()
         setListScrollHelper()
@@ -316,7 +284,7 @@ open class KCalendarView @JvmOverloads constructor(
     // region PUBLIC METHODS
     fun scrollTo(month: YearMonth) = with(calendarLayoutManager) {
         setScrollEnabled(true)
-        calendarLayoutManager.smoothScrollToMonth(month){
+        calendarLayoutManager.smoothScrollToMonth(month) {
             setScrollEnabled(enableCalendarSwipe)
         }
     }

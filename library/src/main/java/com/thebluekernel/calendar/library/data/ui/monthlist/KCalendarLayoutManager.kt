@@ -35,13 +35,12 @@ internal class KCalendarLayoutManager(
         val position = adapter.getAdapterPosition(month)
         if (position == NO_INDEX) return
         scrollToPositionWithOffset(position, 0)
-//        calView.post { adapter.notifyMonthScrollListenerIfNeeded() }
     }
 
     fun smoothScrollToMonth(month: YearMonth, onFinished: () -> Unit) {
         val position = adapter.getAdapterPosition(month)
         if (position == NO_INDEX) return
-        startSmoothScroll(CalendarSmoothScroller(position, null,onFinished))
+        startSmoothScroll(CalendarSmoothScroller(position, null, onFinished))
     }
 
     private fun calculateDayViewOffsetInParent(day: CalendarDay, itemView: View): Int {
@@ -49,7 +48,7 @@ internal class KCalendarLayoutManager(
         val rect = Rect()
         dayView.getDrawingRect(rect)
         (itemView as ViewGroup).offsetDescendantRectToMyCoords(dayView, rect)
-        return if (kCalendarView.isVertical) rect.top + kCalendarView.monthMarginTop else rect.left + kCalendarView.monthMarginStart
+        return if (kCalendarView.isVertical) rect.top else rect.left
     }
 
     private inner class CalendarSmoothScroller(

@@ -16,7 +16,7 @@ internal class MonthViewHolder constructor(
     private val weekHolders: List<WeekViewHolder>
 ) : RecyclerView.ViewHolder(rootLayout) {
 
-    val headerView: View? = rootLayout.findViewById(adapter.monthHeaderViewID)
+    private val headerView: View? = rootLayout.findViewById(adapter.monthHeaderViewID)
     private var headerContainer: CalendarViewHolder? = null
 
     lateinit var currentMonth: CalendarMonth

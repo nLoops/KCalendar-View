@@ -8,6 +8,9 @@ import com.thebluekernel.calendar.library.data.model.CalendarMonth
  * Created by Ahmed Ibrahim on 24,October,2021
  */
 
+/**
+ * Wrapper class to contains [View]
+ */
 open class CalendarViewHolder(val view: View)
 
 /**
