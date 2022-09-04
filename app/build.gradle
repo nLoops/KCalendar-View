@@ -38,6 +38,7 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -51,4 +52,5 @@ dependencies {
     implementation common_dependencies
     testImplementation unit_test_dependencies
     androidTestImplementation android_test_dependencies
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.6'
 }
