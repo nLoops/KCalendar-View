@@ -2,7 +2,6 @@ package com.thebluekernel.calendar.library.data.ui.monthlist
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.annotation.Px
 import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
 import androidx.recyclerview.widget.RecyclerView
